@@ -23,16 +23,10 @@ public class PhotocolClient {
         handlerMap.put("collectionphotos", Handlers::collectionphotosHandler);
         handlerMap.put("image", Handlers::imageHandler);
         handlerMap.put("imageupload", Handlers::imageuploadHandler);
-        handlerMap.put("test", new Handlers.SimpleFunctionalInterface() {
-            @Override
-            public void run(Scanner in, RequestConnectionManager rcm) {
-                rcm.request("/collection/collection1/update", "POST", "{\"aclList\":[{\"email\":\"jlam55555@gmail.com\",\"role\":\"ROLE_OWNER\"},{\"email\":\"helloworld\",\"role\":\"ROLE_VIEWER\"}]}").printRequestDetails();
-            }
-        });
 
         while (true) {
             System.out.print("Choose an endpoint: ");
-            handlerMap.getOrDefault(scanner.nextLine(), Handlers::defaultHandler).run(scanner, rcm);
+            handlerMap.getOrDefault(scanner.nextLine(), Handlers::helpHandler).run(scanner, rcm);
         }
     }
 

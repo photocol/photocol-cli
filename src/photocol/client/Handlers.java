@@ -102,15 +102,15 @@ public class Handlers {
     // helper function to view help menu
     public static void helpHandler(Scanner in, RequestConnectionManager rcm) {
         System.out.println("Commands:\n" +
+                "userphotos\tshow user's photos\n" +
+                "usercollections\tshow user's collections\n" +
+                "collectionphotos\tshow photos in a given collection\n" +
+                "image\tGET/download an image\n" +
+                "image\timage an upload\n" +
                 "signup\tsign up\n" +
                 "login\tlog in\n" +
                 "logout\tlog out\n" +
                 "help\tview this menu\n" +
                 "quit\texit\n");
-    }
-
-    // helper function to guide users to help
-    public static void defaultHandler(Scanner in, RequestConnectionManager rcm) {
-        System.out.println("Command not found. Type \"help\" to view a list of available commands\n.");
     }
 }
