@@ -105,6 +105,18 @@ public class Handlers {
         String collectionUri = in.nextLine();
     }
 
+    public static void addimageHandler(Scanner in, RequestConnectionManager rcm) {
+        System.out.print("Enter collection owner user: ");
+        String collectionOwner = in.nextLine();
+        System.out.print("Enter collection uri: ");
+        String collectionUri = in.nextLine();
+        System.out.print("Enter image uri: ");
+        String imageUri = in.nextLine();
+
+        String data = String.format("{\"uri\":\"%s\"}", imageUri);
+        rcm.request("/collection/" + collectionOwner + "/" + collectionUri + "/addphoto", "POST", data).printRequestDetails();
+    }
+
     // useful for hashmap
     public interface SimpleFunctionalInterface {
         void run(Scanner in, RequestConnectionManager rcm);
@@ -125,6 +137,7 @@ public class Handlers {
                 "imageupload\timage an upload\n" +
                 "createcollection\tcreate a collection\n" +
                 "updatecollection\tupdate a collection\n" +
+                "addimage\tadd image to collection\n" +
                 "signup\tsign up\n" +
                 "login\tlog in\n" +
                 "logout\tlog out\n" +

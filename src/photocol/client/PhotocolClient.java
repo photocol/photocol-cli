@@ -25,6 +25,7 @@ public class PhotocolClient {
         handlerMap.put("imageupload", Handlers::imageuploadHandler);
         handlerMap.put("createcollection", Handlers::createcollectionHandler);
         handlerMap.put("updatecollection", Handlers::updatecollectionHandler);
+        handlerMap.put("addimage", Handlers::addimageHandler);
 
         while (true) {
             System.out.print("Choose an endpoint: ");
