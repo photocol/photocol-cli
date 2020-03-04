@@ -23,9 +23,8 @@ public class RequestConnectionManager {
     public RequestConnection request(String uri, String method, String data, List<String[]> headers) {
         try {
             String url = baseUrl + uri;
-            System.out.printf("Testing %s request to %s with data \"%s\".%n", url, method, data);
             HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-            RequestConnection rc = new RequestConnection(con);
+            RequestConnection rc = new RequestConnection(con, data);
 
             // set up request
             con.setRequestMethod(method);

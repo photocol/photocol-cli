@@ -9,8 +9,10 @@ public class RequestConnection {
 
     private HttpURLConnection conn;
     private Map<String, List<String>> headers;
-    public RequestConnection(HttpURLConnection conn) {
+    private String data;
+    public RequestConnection(HttpURLConnection conn, String data) {
         this.conn = conn;
+        this.data = data;
     }
 
     public void setRequestHeaders(Map<String, List<String>> headers) {
@@ -27,7 +29,8 @@ public class RequestConnection {
     }
 
     public String request() {
-        String headerString = "=====\nREQUEST\n" + conn.getURL() + "\n=====\n";
+        String headerString = "========\nREQUEST\n========\n" + conn.getRequestMethod() + " " + conn.getURL() +
+                (data.length()>0 ? "data: " + data + "\n" : "") + "\nHEADERS:\n";
         for(String header : headers.keySet()) {
             headerString += header + ": ";
             for(String value : headers.get(header))
@@ -38,7 +41,7 @@ public class RequestConnection {
     }
 
     public String response() {
-        String responseMessage = "=====\nRESPONSE\n=====\n";
+        String responseMessage = "========\nRESPONSE:\n========\n";
         try {
             responseMessage += responseCode() + " " + conn.getResponseMessage() + "\n";
         } catch(IOException err) {
@@ -55,7 +58,7 @@ public class RequestConnection {
         } catch(IOException err) {
             err.printStackTrace();
         }
-        return responseMessage;
+        return responseMessage + "========\n";
     }
 
     public void printRequestDetails() {

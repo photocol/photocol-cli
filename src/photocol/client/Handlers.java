@@ -1,9 +1,7 @@
 package photocol.client;
 
-import photocol.client.util.RequestConnection;
 import photocol.client.util.RequestConnectionManager;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Handlers {
