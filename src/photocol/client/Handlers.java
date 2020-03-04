@@ -103,6 +103,19 @@ public class Handlers {
         String collectionOwner = in.nextLine();
         System.out.print("Enter collection uri: ");
         String collectionUri = in.nextLine();
+
+        System.out.print("Enter new collection name: ");
+        String newCollectionName = in.nextLine();
+        System.out.print("Enter users to add to the collection: ");
+        String person;
+        String personString = "";
+        while(!(person=in.nextLine()).equals(""))
+            personString += "{\"username\":\"" + person + "\",\"role\":\"ROLE_VIEWER\"},";
+        personString = personString.substring(0, personString.length()-1);
+
+        String data = String.format("{\"name\":\"%s\",\"aclList\":[%s]}", newCollectionName, personString);
+        String url = String.format("/collection/%s/%s/update", collectionOwner, collectionUri);
+        rcm.request(url, "POST", data).printRequestDetails();
     }
 
     public static void addimageHandler(Scanner in, RequestConnectionManager rcm) {
