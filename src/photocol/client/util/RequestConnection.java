@@ -61,6 +61,18 @@ public class RequestConnection {
         return responseMessage + "========\n";
     }
 
+    public void saveResponseTo(String downloadPath) {
+        if(responseCode() != 200)
+            return;
+
+        try(BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(downloadPath))) {
+            in.transferTo(out);
+        } catch(IOException err) {
+            err.printStackTrace();
+        }
+    }
+
     public void printRequestDetails() {
         System.out.println(request());
         System.out.println(response());
