@@ -73,26 +73,6 @@ public class RequestConnectionManager {
             err.printStackTrace();
             return null;
         }
-
-//        if (!con.getContentType().equals("application/json"))
-//            return status;
-//
-//        // parse cookies
-//        String cookieString;
-//        if ((cookieString = con.getHeaderField("Set-Cookie")) != null)
-//            HttpCookie.parse(cookieString).forEach(cookie -> cookieManager.getCookieStore().add(null, cookie));
-//
-//        // read output
-//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//        String line;
-//        StringBuffer response = new StringBuffer();
-//        while ((line = in.readLine()) != null)
-//            response.append(line);
-//        in.close();
-//        System.out.printf("Response: %s%n", response.toString());
-//
-//        con.disconnect();
-//        return status;
     }
 
     public RequestConnection request(String uri, String method, String data) {

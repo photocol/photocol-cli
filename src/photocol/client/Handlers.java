@@ -89,6 +89,22 @@ public class Handlers {
         rcm.request("/image/" + filename + "/upload", "PUT", imagePath, headers).printRequestDetails();
     }
 
+    public static void createcollectionHandler(Scanner in, RequestConnectionManager rcm) {
+        System.out.print("Enter collection name: ");
+        String collectionName = in.nextLine();
+
+        String data = String.format("{\"name\":\"%s\"}", collectionName);
+        rcm.request("/collection/new", "POST", data).printRequestDetails();
+    }
+
+    public static void updatecollectionHandler(Scanner in, RequestConnectionManager rcm) {
+        // TODO: working here
+        System.out.print("Enter collection owner user: ");
+        String collectionOwner = in.nextLine();
+        System.out.print("Enter collection uri: ");
+        String collectionUri = in.nextLine();
+    }
+
     // useful for hashmap
     public interface SimpleFunctionalInterface {
         void run(Scanner in, RequestConnectionManager rcm);
@@ -106,7 +122,9 @@ public class Handlers {
                 "usercollections\tshow user's collections\n" +
                 "collectionphotos\tshow photos in a given collection\n" +
                 "image\tGET/download an image\n" +
-                "image\timage an upload\n" +
+                "imageupload\timage an upload\n" +
+                "createcollection\tcreate a collection\n" +
+                "updatecollection\tupdate a collection\n" +
                 "signup\tsign up\n" +
                 "login\tlog in\n" +
                 "logout\tlog out\n" +
