@@ -20,7 +20,7 @@ public class Handlers {
         // TODO: note this does not prevent JSON injection
         String json = String.format("{\"email\":\"%s\",\"username\":\"%s\",\"passwordHash\":\"%s\"}",
                 email, username, password);
-        rcm.request("/signup", "POST", json).printRequestDetails();
+        rcm.request("/user/signup", "POST", json).printRequestDetails();
     }
 
     public static void loginHandler(Scanner in, RequestConnectionManager rcm) {
@@ -32,19 +32,19 @@ public class Handlers {
         // TODO: note this does not prevent JSON injection
         String json = String.format("{\"username\":\"%s\",\"passwordHash\":\"%s\"}",
                 username, password);
-        rcm.request("/login", "POST", json).printRequestDetails();
+        rcm.request("/user/login", "POST", json).printRequestDetails();
     }
 
     public static void logoutHandler(Scanner in, RequestConnectionManager rcm) {
-        rcm.request("/logout").printRequestDetails();
+        rcm.request("/user/logout").printRequestDetails();
     }
 
     public static void userphotosHandler(Scanner in, RequestConnectionManager rcm) {
-        rcm.request("/userphotos").printRequestDetails();
+        rcm.request("/photo/currentuser").printRequestDetails();
     }
 
     public static void usercollectionsHandler(Scanner in, RequestConnectionManager rcm) {
-        rcm.request("/usercollections").printRequestDetails();
+        rcm.request("/collection/currentuser").printRequestDetails();
     }
 
     public static void collectionphotosHandler(Scanner in, RequestConnectionManager rcm) {
@@ -56,22 +56,13 @@ public class Handlers {
         rcm.request(String.format("/collection/%s/%s", collectionOwner, collectionUri), "GET").printRequestDetails();
     }
 
-    public static void collectionupdateHandler(Scanner in, RequestConnection rcm) {
-        System.out.print("Enter collection owner user: ");
-        String collectionOwner = in.nextLine();
-        System.out.print("Enter collection uri: ");
-        String collectionUri = in.nextLine();
-
-        // TODO: working here
-    }
-
     public static void imageHandler(Scanner in, RequestConnectionManager rcm) {
         System.out.print("Enter image uri: ");
         String imageUri = in.nextLine();
         System.out.print("Download path: ");
         String downloadPath = in.nextLine();
 
-        RequestConnection rc = rcm.request("/image/" + imageUri);
+        RequestConnection rc = rcm.request("/perma/" + imageUri);
         System.out.println(rc.request());
         rc.saveResponseTo(downloadPath);
     }
@@ -86,7 +77,11 @@ public class Handlers {
 
         List<String[]> headers = new ArrayList<>();
         headers.add(new String[]{"Content-Type", "image/" + extension});
-        rcm.request("/image/" + filename + "/upload", "PUT", imagePath, headers).printRequestDetails();
+        rcm.request("/photo/" + filename + "/upload", "PUT", imagePath, headers).printRequestDetails();
+    }
+
+    public static void userdetailsHandler(Scanner in, RequestConnectionManager rcm) {
+        rcm.request("/user/details").printRequestDetails();
     }
 
     public static void createcollectionHandler(Scanner in, RequestConnectionManager rcm) {
@@ -145,6 +140,7 @@ public class Handlers {
         System.out.println("Commands:\n" +
                 "userphotos\tshow user's photos\n" +
                 "usercollections\tshow user's collections\n" +
+                "userdetails\tshow username if logged in\n" +
                 "collectionphotos\tshow photos in a given collection\n" +
                 "image\tGET/download an image\n" +
                 "imageupload\timage an upload\n" +

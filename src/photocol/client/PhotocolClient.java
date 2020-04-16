@@ -20,6 +20,7 @@ public class PhotocolClient {
         handlerMap.put("logout", Handlers::logoutHandler);
         handlerMap.put("userphotos", Handlers::userphotosHandler);
         handlerMap.put("usercollections", Handlers::usercollectionsHandler);
+        handlerMap.put("userdetails", Handlers::userdetailsHandler);
         handlerMap.put("collectionphotos", Handlers::collectionphotosHandler);
         handlerMap.put("image", Handlers::imageHandler);
         handlerMap.put("imageupload", Handlers::imageuploadHandler);
