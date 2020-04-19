@@ -24,9 +24,12 @@ public class PhotocolClient {
         handlerMap.put("collectionphotos", Handlers::collectionphotosHandler);
         handlerMap.put("image", Handlers::imageHandler);
         handlerMap.put("imageupload", Handlers::imageuploadHandler);
+        handlerMap.put("deletephoto", Handlers::photodeleteHandler);
         handlerMap.put("createcollection", Handlers::createcollectionHandler);
         handlerMap.put("updatecollection", Handlers::updatecollectionHandler);
-        handlerMap.put("addimage", Handlers::addimageHandler);
+        handlerMap.put("deletecollection", Handlers::deletecollectionHandler);
+        handlerMap.put("addphoto", Handlers::addphotoHandler);
+        handlerMap.put("removephoto", Handlers::removephotoHandler);
 
         while (true) {
             System.out.print("Choose an endpoint: ");

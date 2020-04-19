@@ -77,7 +77,14 @@ public class Handlers {
 
         List<String[]> headers = new ArrayList<>();
         headers.add(new String[]{"Content-Type", "image/" + extension});
-        rcm.request("/photo/" + filename + "/upload", "PUT", imagePath, headers).printRequestDetails();
+        rcm.request("/photo/" + filename, "PUT", imagePath, headers).printRequestDetails();
+    }
+
+    public static void photodeleteHandler(Scanner in, RequestConnectionManager rcm) {
+        System.out.print("Enter photo uri: ");
+        String photouri = in.nextLine();
+
+        rcm.request("/photo/" + photouri, "DELETE").printRequestDetails();
     }
 
     public static void userdetailsHandler(Scanner in, RequestConnectionManager rcm) {
@@ -93,7 +100,6 @@ public class Handlers {
     }
 
     public static void updatecollectionHandler(Scanner in, RequestConnectionManager rcm) {
-        // TODO: working here
         System.out.print("Enter collection owner user: ");
         String collectionOwner = in.nextLine();
         System.out.print("Enter collection uri: ");
@@ -103,18 +109,31 @@ public class Handlers {
         String newCollectionName = in.nextLine();
         System.out.print("Enter users to add to the collection: ");
         String person;
-        String personString = "";
+        List<String> persons = new ArrayList<>();
         while(!(person=in.nextLine()).equals(""))
-            personString += "{\"username\":\"" + person + "\",\"role\":\"ROLE_VIEWER\"},";
-        personString = personString.substring(0, personString.length()-1);
+            persons.add("{\"username\":\"" + person + "\",\"role\":\"ROLE_VIEWER\"}");
+
+        System.out.print("Enter users to remove from the collection: ");
+        while(!(person=in.nextLine()).equals(""))
+            persons.add("{\"username\":\"" + person + "\",\"role\":\"ROLE_NONE\"}");
+        String personString = String.join(",", persons);
 
         String data = String.format("{\"name\":\"%s\",\"aclList\":[%s]}", newCollectionName, personString);
         String url = String.format("/collection/%s/%s/update", collectionOwner, collectionUri);
         rcm.request(url, "POST", data).printRequestDetails();
     }
 
-    public static void addimageHandler(Scanner in, RequestConnectionManager rcm) {
-        System.out.print("Enter collection owner user: ");
+    public static void deletecollectionHandler(Scanner in, RequestConnectionManager rcm) {
+        System.out.print("Enter collection owner username: ");
+        String owner = in.nextLine();
+        System.out.print("Enter collection uri: ");
+        String collectionUri = in.nextLine();
+
+        rcm.request("/collection/" + owner + "/" + collectionUri + "/delete", "POST").printRequestDetails();
+    }
+
+    public static void addphotoHandler(Scanner in, RequestConnectionManager rcm) {
+        System.out.print("Enter collection owner username: ");
         String collectionOwner = in.nextLine();
         System.out.print("Enter collection uri: ");
         String collectionUri = in.nextLine();
@@ -123,6 +142,18 @@ public class Handlers {
 
         String data = String.format("{\"uri\":\"%s\"}", imageUri);
         rcm.request("/collection/" + collectionOwner + "/" + collectionUri + "/addphoto", "POST", data).printRequestDetails();
+    }
+
+    public static void removephotoHandler(Scanner in, RequestConnectionManager rcm) {
+        System.out.print("Enter collection owner user: ");
+        String collectionOwner = in.nextLine();
+        System.out.print("Enter collection uri: ");
+        String collectionUri = in.nextLine();
+        System.out.print("Enter image uri: ");
+        String imageUri = in.nextLine();
+
+        String data = String.format("{\"uri\":\"%s\"}", imageUri);
+        rcm.request("/collection/" + collectionOwner + "/" + collectionUri + "/removephoto", "POST", data).printRequestDetails();
     }
 
     // useful for hashmap
@@ -144,9 +175,12 @@ public class Handlers {
                 "collectionphotos\tshow photos in a given collection\n" +
                 "image\tGET/download an image\n" +
                 "imageupload\timage an upload\n" +
+                "deletephoto\tdelete a photo from account\n" +
                 "createcollection\tcreate a collection\n" +
                 "updatecollection\tupdate a collection\n" +
-                "addimage\tadd image to collection\n" +
+                "deletecollection\tdelete a collection\n" +
+                "addphoto\tadd photo to collection\n" +
+                "removephoto\tremove photo from collection\n" +
                 "signup\tsign up\n" +
                 "login\tlog in\n" +
                 "logout\tlog out\n" +
