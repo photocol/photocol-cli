@@ -47,10 +47,11 @@ public class RequestConnection {
         } catch(IOException err) {
             err.printStackTrace();
         }
-        if(responseCode() != 200)
-            return responseMessage;
+//        if(responseCode() != 200)
+//            return responseMessage;
 
-        try(BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+        try(BufferedReader in = new BufferedReader(new InputStreamReader(responseCode() < 400
+                ? conn.getInputStream() : conn.getErrorStream()))) {
             String line;
             while((line=in.readLine()) != null) {
                 responseMessage += line + "\n";
@@ -62,10 +63,8 @@ public class RequestConnection {
     }
 
     public void saveResponseTo(String downloadPath) {
-        if(responseCode() != 200)
-            return;
-
-        try(BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
+        try(BufferedInputStream in = new BufferedInputStream(responseCode() < 400 ?
+                conn.getInputStream() : conn.getErrorStream());
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(downloadPath))) {
             in.transferTo(out);
         } catch(IOException err) {

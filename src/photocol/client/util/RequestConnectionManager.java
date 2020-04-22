@@ -14,6 +14,9 @@ public class RequestConnectionManager {
     private String baseUrl;
     public RequestConnectionManager(String baseUrl) {
         this.baseUrl = baseUrl;
+
+        // necessary for setting the "Origin" header
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
     }
 
     // for sending test requests to the webserver; helpful guide to managing HTTP requests from Java: (w/ cookies):
@@ -35,8 +38,14 @@ public class RequestConnectionManager {
                     .map(cookie -> cookie.toString())
                     .collect(Collectors.joining(";"));
             headers.add(new String[]{"Cookie", requestCookies});
-            for (String[] header : headers)
+
+            // need this header to work with new CORS restriction
+            headers.add(new String[]{"Origin", "http://localhost"});
+
+            for (String[] header : headers) {
+                System.out.println(header[0] + " " + header[1]);
                 con.setRequestProperty(header[0], header[1]);
+            }
             rc.setRequestHeaders(con.getRequestProperties());
 
             // handle input POST vs. PUT
